@@ -1,0 +1,17 @@
+:root {
+  --text-color: #000;
+  --primary: var(--blue);
+  --secondary: var(--grey);
+  --danger: var(--red);
+  --blue: #0d6efd;
+  --white: #fff;
+  --grey: #6c757d;
+  --red: #dc3545;
+  --light-grey: #ccc;
+  --main-radius: rem(6); }
+
+body {
+  background-color: #161616;
+  color: #fff; }
+
+/*# sourceMappingURL=style.css.map */

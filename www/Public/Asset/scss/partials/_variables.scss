@@ -1,0 +1,27 @@
+// Colors
+$textColor: #000;
+$blue: #0d6efd;
+$white: #fff;
+$grey: #6c757d;
+$red: #dc3545;
+$theme: dark;
+$bkg_primary: #161616;
+$bkg_second: #2D2D2D;
+$text_primary: #fff;
+
+:root {
+	--text-color: #{$textColor};
+	--primary: var(--blue);
+	--secondary: var(--grey);
+	--danger: var(--red);
+
+	--blue: #{$blue};
+	--white: #{$white};
+	--grey: #{$grey};
+	--red: #{$red};
+	--light-grey: #ccc;
+
+	// --main-font: #{$font1};
+
+	--main-radius: #{rem(6)};
+}
