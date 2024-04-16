@@ -14,6 +14,13 @@ function myAutoloader($class){
     }
 }
 
+try {
+    $pdo = new PDO('pgsql:host=postgres;dbname=my_database', 'group12', 'g12');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "Connexion à la base de données PostgreSQL réussie.";
+} catch (PDOException $e) {
+    echo "Erreur lors de la connexion à la base de données : " . $e->getMessage();
+}
 
 //Lorsque on met dans l'url /login par exemple
 //On récupère dans le fichier Routes.yaml le controller et l'action associée

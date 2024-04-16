@@ -4,6 +4,14 @@ services:
     build: site
     ports :
       - "80:80"
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: my_database
+      POSTGRES_USER: group12
+      POSTGRES_PASSWORD: g12
     volumes:
       - ./www:/var/www/html/
       - ./server/000-default.conf:/etc/apache2/sites-available/000-default.conf
@@ -12,18 +20,12 @@ services:
 
 
 
-  mariadb:
-    image: mariadb
-    restart: always
+  postgres:
+    image: postgres:latest
     environment:
-      MYSQL_ROOT_PASSWORD: esgipwd
-      MYSQL_DATABASE: esgi
-      MYSQL_USER: esgi
-      MYSQL_PASSWORD: esgipwd
-    ports:
-      - "3306:3306"
-    volumes:
-      - mariadb_data:/var/lib/mysql
+      POSTGRES_DB: my_database
+      POSTGRES_USER: group12
+      POSTGRES_PASSWORD: g12
 
 
 
@@ -32,13 +34,8 @@ services:
     image: phpmyadmin
     restart: always
     environment:
-      PMA_HOST: mariadb
-      PMA_USER: esgi
-      PMA_PASSWORD: esgipwd
+      PMA_HOST: postgres
     ports:
       - "8080:80"
     depends_on:
-      - mariadb
-
-volumes:
-  mariadb_data:
+      - postgres

@@ -7,8 +7,8 @@ class Main
     {
         //Appeler un template Front et la vue Main/Home
         $view = new View("Main/home");
-        //$view->setView("Main/Home");
-        //$view->setTemplate("Front");
+        $view->setView("Main/Home");
+        $view->setTemplate("Front");
         $view->render();
     }
     public function logout()
