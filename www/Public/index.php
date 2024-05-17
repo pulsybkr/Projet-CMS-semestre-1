@@ -1,7 +1,20 @@
 <?php
 
 namespace App;
-// index.php
+use Firebase\JWT\JWT; 
+use Firebase\JWT\Key;
+
+require __DIR__.'/../vendor/autoload.php';
+
+use Dotenv\Dotenv;
+
+try {
+    $dotenv = Dotenv::createImmutable(__DIR__.'/../');
+    $dotenv->load();
+} catch (\Dotenv\Exception\InvalidPathException $e) {
+    echo 'Erreur lors du chargement du fichier .env: ' . $e->getMessage();
+    exit(1);
+}
 
 // Chargement des dépendances et configuration de l'application
 spl_autoload_register("App\myAutoloader");
@@ -16,6 +29,8 @@ function myAutoloader($class){
         include "../Models/".$class.".php";
     }
 }
+
+
 
 // Récupération de l'URI
 $uri = $_SERVER["REQUEST_URI"];
@@ -46,11 +61,11 @@ $controller = $listOfRoutes[$uri]["Controller"];
 $action = $listOfRoutes[$uri]["Action"];
 
 // Vérification d'authentification et des autorisations
-// if($listOfRoutes[$uri]["Islog"] && !isLoggedIn()) {
-//     // Redirection vers la page de connexion ou autre traitement
-//     header("Location: /");
-//     exit();
-// }
+if($listOfRoutes[$uri]["Islog"] && isLoggedIn()){
+    // Redirection vers la page de connexion ou autre traitement
+    header("Location: /");
+    exit();
+}
 
 if($listOfRoutes[$uri]["IsAdmin"] && !isAdmin()) {
     // Redirection vers une page d'erreur ou autre traitement
@@ -78,8 +93,30 @@ $objetController->$action();
 
 // Fonctions de vérification d'authentification et d'autorisation
 function isLoggedIn() {
-    // return false;
-    // Vérifie si l'utilisateur est connecté et retourne true ou false
+    $cookieName = "esgi_cc";
+    if (isset($_COOKIE[$cookieName])) {
+        $token = $_COOKIE[$cookieName];
+        
+        try {
+            // Vérifier si le token est valide en le décodant
+            $decoded = JWT::decode($token, new Key(getenv('JWT_SECRET_KEY'), 'HS256'));
+            
+            // Vérifier si le token a expiré
+            if ($decoded->exp < time()) {
+                // Le token a expiré
+                return false;
+            }
+            
+            // Le token est valide
+            return true;
+        } catch (Exception $e) {
+            // Une exception s'est produite lors du décodage du token
+            return false;
+        }
+    }
+    
+    // Le cookie n'existe pas
+    return false;
 }
 
 function isAdmin() {

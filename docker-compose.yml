@@ -9,7 +9,16 @@ services:
       - ./server/000-default.conf:/etc/apache2/sites-available/000-default.conf
       - ./server/apache2.conf:/etc/apache2/apache2.conf
       - ./server/php.ini:/usr/local/etc/php/php.ini
+    depends_on:
+      - composer
+    environment:
+      - JWT_SECRET_KEY=o58BDHpCdnI4Y6iYtmk9RLJ5IVbB8svfsPw09kjiupAMrab0vO4JdXmZunG3kSat
 
+  composer:
+    image: composer:latest
+    volumes:
+      - ./www:/var/www/html/
+    working_dir: /var/www/html/
 
   mariadb:
     image: mariadb

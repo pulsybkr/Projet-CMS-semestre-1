@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Core;
+use Firebase\JWT\JWT; 
 
 use PDO;
 
@@ -40,10 +41,12 @@ class SQL
 
         $queryPrepared = $this->pdo->prepare($sql);
         $queryPrepared->execute($columns);
+
     }
 
     public function connect($password)
     {
+
         $columnsAll = get_object_vars($this);
         $columnsToDelete = get_class_vars(get_class());
         $columns = array_diff_key($columnsAll, $columnsToDelete);
@@ -52,12 +55,20 @@ class SQL
             die("Cette adresse n'est pas enregistrée. Veuillez créer un compte.");
         }
 
-        if(!$this->checkPassword($columns["email"], $password)){
+        if (!$this->isAccountActive($columns["email"])) {
+            die("Ce compte n'est pas activé. Veuillez vérifier votre e-mail.");
+        }
+
+        $userId = $this->checkPassword($columns["email"], $password);
+
+        if (!$userId) {
             die("Mot de passe incorrect");
         }
 
-        echo "ça arrive";
-        // Code de vérification du mot de passe ici
+        $this->createUserCookie($userId, $columns["email"]);
+
+        echo "Connexion réussie";
+        
     }
 
     public function isEmailAvailable(string $email): bool
@@ -70,16 +81,50 @@ class SQL
         return ($result['count'] == 0); // True si l'e-mail est disponible, sinon False
     }
 
-    public function checkPassword(string $email, string $password): bool
+    public function isAccountActive(string $email): bool
     {
-        $sql = "SELECT password FROM ".$this->table." WHERE email = :email";
+        $sql = "SELECT status FROM " . $this->table . " WHERE email = :email";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['email' => $email]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result && $result['status'] > 0) {
+            return true; // Le compte est activé
+        }
+        return false; // Le compte n'est pas activé ou l'e-mail n'existe pas
+    }
+
+    public function checkPassword(string $email, string $password)
+    {
+        $sql = "SELECT id, password FROM " . $this->table . " WHERE email = :email";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['email' => $email]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($result && password_verify($password, $result['password'])) {
-            return true; // Mot de passe correct
+            return $result['id']; // Retourne l'ID de l'utilisateur si le mot de passe est correct
         }
-        return false; // Mot de passe incorrect ou e-mail introuvable
+        return null; // Mot de passe incorrect ou e-mail introuvable
     }
+
+    private function createUserCookie($userId, $email)
+    {
+         // La connexion est réussie, nous créons le cookie JWT
+         $token = $this->createUserToken($userId, $email);
+         setcookie('esgi_cc', $token, time() + (60 * 60 ), '/', '', true, true); 
+    }
+
+    public function createUserToken($userId, $email)
+    {
+        $payload = [
+            'user_id' => $userId,
+            'email' => $email,
+            'exp' => time() + (60 * 60 * 24),
+        ];
+
+        $token = JWT::encode($payload, getenv('JWT_SECRET_KEY'), 'HS256');
+
+        return $token;
+    }
+
 }
