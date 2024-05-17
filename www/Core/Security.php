@@ -8,10 +8,5 @@ class Security
         return false;
     }
 
-    public function isFirstLog(): bool
-    {
-        return false;
-    }
-
 
 }

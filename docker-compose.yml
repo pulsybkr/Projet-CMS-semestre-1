@@ -10,10 +10,6 @@ services:
       - ./server/apache2.conf:/etc/apache2/apache2.conf
       - ./server/php.ini:/usr/local/etc/php/php.ini
 
-  sass:
-    image: larryprice/sass
-    volumes:
-      - ./:/src
 
   mariadb:
     image: mariadb
@@ -24,12 +20,30 @@ services:
       MYSQL_USER: esgi
       MYSQL_PASSWORD: esgipwd
     ports:
-      - "3306:3306"
+      - "3307:3307"
     volumes:
       - mariadb_data:/var/lib/mysql
 
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: esgi
+      POSTGRES_USER: esgi
+      POSTGRES_PASSWORD: esgipwd
+    ports:
+      - "5432:5432"
 
-
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "pgadmin@example.com"
+      PGADMIN_DEFAULT_PASSWORD: "pgadmin"
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
 
   phpmyadmin:
     image: phpmyadmin
@@ -39,7 +53,7 @@ services:
       PMA_USER: esgi
       PMA_PASSWORD: esgipwd
     ports:
-      - "8080:80"
+      - "9090:80"
     depends_on:
       - mariadb
 

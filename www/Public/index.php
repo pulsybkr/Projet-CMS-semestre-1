@@ -1,44 +1,33 @@
 <?php
 
 namespace App;
+// index.php
 
-//Notre Autoloader
+// Chargement des dépendances et configuration de l'application
 spl_autoload_register("App\myAutoloader");
 
 function myAutoloader($class){
     $classExploded = explode("\\", $class);
     $class = end($classExploded);
-    //echo "L'autoloader se lance pour ".$class;
     if(file_exists("../Core/".$class.".php")){
         include "../Core/".$class.".php";
     }
+    if(file_exists("../Models/".$class.".php")){
+        include "../Models/".$class.".php";
+    }
 }
 
-
-//Lorsque on met dans l'url /login par exemple
-//On récupère dans le fichier Routes.yaml le controller et l'action associée
-//On fait une instance du controller ex: $controller = new Security();
-//Et on appel l'action associée ex : $controller->login();
-//Si je décide de remplacer dans le fichier routes.yaml /login par /se-connecter tout doit fonctionner
-//Attention pensez à effectuer un maximum de vérification et d'afficher les erreurs s'il y en a, exemple le fichier Routes.yaml n'existe pas
-// ou autre exemple le controller Security ne possède pas d'acion login
-//Le résultat final dans notre exemple doit afficher "Se connecter" dans le navigateur ou alors afficher PAGE 404
-//Consigne du TP : Envoyer par mail : y.skrzypczyk@gmail.com
-//Objet du mail : "Projet TP ROUTING - GROUPE X"
-//Contenu du mail copier coller le contenu du fichier index.php et la liste des membres du groupe
-//A envoyer avant 13 le 01/03/2024-
-
-//http://localhost/login
+// Récupération de l'URI
 $uri = $_SERVER["REQUEST_URI"];
 if(strlen($uri) > 1)
     $uri = rtrim($uri, "/");
 $uriExploded = explode("?",$uri);
 $uri = $uriExploded[0];
 
-
+// Chargement des routes depuis le fichier YAML
 if(file_exists("../Routes.yml")) {
     $listOfRoutes = yaml_parse_file("../Routes.yml");
-}else{
+} else {
     header("Internal Server Error", true, 500);
     die("Le fichier de routing ../Routes.yml n'existe pas");
 }
@@ -56,10 +45,20 @@ if(empty($listOfRoutes[$uri]["Controller"]) || empty($listOfRoutes[$uri]["Action
 $controller = $listOfRoutes[$uri]["Controller"];
 $action = $listOfRoutes[$uri]["Action"];
 
+// Vérification d'authentification et des autorisations
+// if($listOfRoutes[$uri]["Islog"] && !isLoggedIn()) {
+//     // Redirection vers la page de connexion ou autre traitement
+//     header("Location: /");
+//     exit();
+// }
 
+if($listOfRoutes[$uri]["IsAdmin"] && !isAdmin()) {
+    // Redirection vers une page d'erreur ou autre traitement
+    header("Location: /error403");
+    exit();
+}
 
-
-//include "../Controllers/".$controller.".php";
+// Inclusion et exécution du contrôleur et de l'action
 if(!file_exists("../Controllers/".$controller.".php")){
     die("Le fichier controller ../Controllers/".$controller.".php n'existe pas");
 }
@@ -77,8 +76,12 @@ if( !method_exists($controller, $action) ){
 }
 $objetController->$action();
 
+// Fonctions de vérification d'authentification et d'autorisation
+function isLoggedIn() {
+    // return false;
+    // Vérifie si l'utilisateur est connecté et retourne true ou false
+}
 
-
-
-
-
+function isAdmin() {
+    // Vérifie si l'utilisateur est administrateur et retourne true ou false
+}

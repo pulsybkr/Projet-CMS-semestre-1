@@ -1,41 +1,55 @@
 /:
+  Islog: False
+  IsAdmin: False
   Controller: "Main"
   Action: "home"
 
 
 /login:
+  IsAdmin: False
+  Islog: True
   Controller: "Security"
   Action: "login"
 
-/dashboard:
-  Controller: "Security"
-  Action: "dashboard"
-
 /register:
+  Islog: True
+  IsAdmin: False
   Controller: "Security"
   Action: "register"
 
 /logout:
+  Islog: True
+  IsAdmin: True
   Controller: "Security"
   Action: "logout"
 
 
 /ajout-utilisateur:
+  Islog: True
+  IsAdmin: True
   Controller: "User"
   Action: "add"
 
 /del-utilisateur:
+  Islog: True
+  IsAdmin: True
   Controller: "User"
   Action: "delete"
 
 /show-utilisateur:
+  Islog: True
+  IsAdmin: True
   Controller: "User"
   Action: "show"
 
 /list-utilisateurs:
+  Islog: True
+  IsAdmin: True
   Controller: "User"
   Action: "list"
 
 /maj-utilisateurs:
+  Islog: True
+  IsAdmin: True
   Controller: "User"
   Action: "edit"
