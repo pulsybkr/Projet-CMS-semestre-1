@@ -11,6 +11,18 @@
   Controller: "Security"
   Action: "login"
 
+/validate:
+  IsAdmin: false
+  Islog: false
+  Controller: "Security"
+  Action: "validate"
+
+/reset_password:
+  IsAdmin: false
+  Islog: false
+  Controller: "Security"
+  Action: "reset_password"
+
 /register:
   Islog: true
   IsAdmin: false
