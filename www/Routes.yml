@@ -1,9 +1,20 @@
 /:
-  Islog: false
   IsAdmin: false
+  Islog: false
   Controller: "Main"
   Action: "home"
 
+/dashboard/user:
+  IsAdmin: false
+  Islog: false
+  Controller: "Dashboard"
+  Action: "user"
+
+/dashboard/invite-user:
+  IsAdmin: false
+  Islog: false
+  Controller: "Dashboard"
+  Action: "invite"
 
 /login:
   IsAdmin: false

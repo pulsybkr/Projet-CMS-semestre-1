@@ -8,17 +8,7 @@ use App\Models\User;
 class Security{
     public function login(): void
     {
-        //Je vérifie que l'utilisateur n'est pas connecté sinon j'affiche un message
-
-        /*
-        $security = new Auth();
-        if($security->isLogged()){
-            echo "Vous êtes déjà connecté";
-        }else{
-            echo "Se connecter";
-        }
-        */
-
+  
         $form = new Form("Login");
         if( $form->isSubmitted() && $form->isValid() )
         {
@@ -56,6 +46,7 @@ class Security{
     {
         echo "Se déconnecter";
     }
+    
     public function reset_password(): void
     {
         // Récupérer la chaîne de requête de l'URL

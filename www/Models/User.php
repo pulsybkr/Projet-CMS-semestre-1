@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 use App\Core\SQL;
+use PDO;
 
 class User extends SQL
 {
@@ -192,6 +193,14 @@ class User extends SQL
         $this->token_reset_pwd = $token_reset_pwd;
     }
 
+    public function getAllUsers($pdo)
+    {
+        $this->pdo = $pdo;
+        $sql = "SELECT * FROM esgi_user";
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute();
+        return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 
 }
