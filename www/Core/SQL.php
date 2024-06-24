@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Core;
+use App\Compenent\Validate;
 use Firebase\JWT\JWT; 
+use Firebase\JWT\Key;
 use PDO;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -21,6 +23,38 @@ class SQL
 
         $classChild = get_called_class();
         $this->table = "esgi_" . strtolower(str_replace("App\\Models\\", "", $classChild));
+    }
+
+    public function add()
+    {
+        $columnsAll = get_object_vars($this);
+        $columnsToDelete = get_class_vars(get_class());
+        $columns = array_diff_key($columnsAll, $columnsToDelete);
+
+        // token de validation
+        if (empty($this->getId())) {
+            $sql = "INSERT INTO " . $this->table . " (" . implode(', ', array_keys($columns)) . ")  
+            VALUES (:" . implode(',:', array_keys($columns)) . ")";
+        } else {
+            foreach ($columns as $column => $value) {
+                $sqlUpdate[] = $column . "=:" . $column;
+            }
+
+            $sql = "UPDATE " . $this->table . " SET " . implode(',', $sqlUpdate) . " WHERE id=" . $this->getId();
+        }
+
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($columns);
+
+        $sql = new SQL();
+        $validate = new Validate();
+        $email = $sql->getUserIdFromCookie();
+        if (!$validate->updateFirstLog($email)){
+            die("Error de la modification du status de l'user");
+        }else{
+            header("Location: /dashboard"); 
+        }
+
     }
 
     public function save()
@@ -182,7 +216,23 @@ class SQL
     {
          // La connexion est réussie, nous créons le cookie JWT
          $token = $this->createUserToken($userId, $email);
-         setcookie('esgi_cc', $token, time() + (60 * 60 ), '/', '', true, true); 
+         setcookie('esgi_cc', $token, time() + (60 * 60 * 12 ), '/', '', true, true); 
+    }
+
+    public function getUserIdFromCookie()
+    {
+        if (isset($_COOKIE['esgi_cc'])) {
+            $token = $_COOKIE['esgi_cc'];
+
+            try {
+                $decoded = JWT::decode($token, new Key(getenv('JWT_SECRET_KEY'), 'HS256'));
+                return $decoded->email;
+            } catch (Exception $e) {
+                // Gérer l'erreur (par exemple, token expiré ou invalide)
+                return null;
+            }
+        }
+        return null;
     }
 
     public function createUserToken($userId, $email)
@@ -204,15 +254,15 @@ class SQL
         try {
             // Configurations du serveur SMTP
             $mail->isSMTP();
-            $mail->Host = 'smtp.mailgun.org'; 
+            $mail->Host = 'mail.smtp2go.com'; 
             $mail->SMTPAuth = true;
-            $mail->Username = 'postmaster@sandboxe8ff871a99a149228de1e445a0ee40ac.mailgun.org'; 
-            $mail->Password = '3b6afcffa8d9be8cf53e5baa76eecf58-8c90f339-425243c4'; 
+            $mail->Username = 'tikss-cg.com'; 
+            $mail->Password = 'M4iUWZUe2A3DBO0X'; 
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
-            $mail->Port = 587; 
+            $mail->Port = 2525; 
     
             // Destinataire
-            $mail->setFrom('nepasrepondre@esgi.com', 'ClubWebsiteCMS');
+            $mail->setFrom('contact@tikss-cg.com', 'ClubWebsiteCMS');
             $mail->addAddress($toEmail, $toName);
     
             // Contenu de l'email
@@ -234,15 +284,15 @@ class SQL
         try {
             // Configurations du serveur SMTP
             $mail->isSMTP();
-            $mail->Host = 'smtp.mailgun.org'; 
+            $mail->Host = 'mail.smtp2go.com'; 
             $mail->SMTPAuth = true;
-            $mail->Username = 'postmaster@sandboxe8ff871a99a149228de1e445a0ee40ac.mailgun.org'; 
-            $mail->Password = '3b6afcffa8d9be8cf53e5baa76eecf58-8c90f339-425243c4'; 
+            $mail->Username = 'tikss-cg.com'; 
+            $mail->Password = 'M4iUWZUe2A3DBO0X'; 
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
-            $mail->Port = 587; 
+            $mail->Port = 2525; 
     
             // Destinataire
-            $mail->setFrom('nepasrepondre@esgi.com', 'ClubWebsiteCMS');
+            $mail->setFrom('contact@tikss-cg.com', 'ClubWebsiteCMS');
             $mail->addAddress($toEmail, " ");
     
             // Contenu de l'email

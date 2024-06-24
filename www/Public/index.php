@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use Exception;
 use Firebase\JWT\JWT; 
 use Firebase\JWT\Key;
 

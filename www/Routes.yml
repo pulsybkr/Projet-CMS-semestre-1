@@ -4,6 +4,18 @@
   Controller: "Main"
   Action: "home"
 
+/dashboard:
+  IsAdmin: false
+  Islog: false
+  Controller: "Dashboard"
+  Action: "home"
+
+/create-club:
+  IsAdmin: false
+  Islog: false
+  Controller: "Dashboard"
+  Action: "create_club"
+
 /dashboard/user:
   IsAdmin: false
   Islog: false
