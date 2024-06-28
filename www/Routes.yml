@@ -28,6 +28,30 @@
   Controller: "Dashboard"
   Action: "invite"
 
+/dashboard/manages-pages:
+  IsAdmin: false
+  Islog: false
+  Controller: "Dashboard"
+  Action: "allpages"
+
+/dashboard/manage-pages/create-page:
+  IsAdmin: false
+  Islog: false
+  Controller: "Dashboard"
+  Action: "create_page"
+
+/dashboard/manage-pages/build-page:
+  IsAdmin: false
+  Islog: false
+  Controller: "Dashboard"
+  Action: "build_page"
+
+/dashboard/manage-pages/website_manager:
+  IsAdmin: false
+  Islog: false
+  Controller: "Dashboard"
+  Action: "website_manager"
+
 /login:
   IsAdmin: false
   Islog: true

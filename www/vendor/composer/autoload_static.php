@@ -10,6 +10,7 @@ class ComposerStaticInit20fad51902f91e7fd3039e016a6556b5
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        'a0dfc604d59f03ee36c4883906a6ff25' => __DIR__ . '/..' . '/hansschouten/phpagebuilder/src/Core/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -22,6 +23,7 @@ class ComposerStaticInit20fad51902f91e7fd3039e016a6556b5
         'P' => 
         array (
             'PhpOption\\' => 10,
+            'PHPageBuilder\\' => 14,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
         'G' => 
@@ -54,6 +56,10 @@ class ComposerStaticInit20fad51902f91e7fd3039e016a6556b5
         'PhpOption\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
+        ),
+        'PHPageBuilder\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hansschouten/phpagebuilder/src',
         ),
         'PHPMailer\\PHPMailer\\' => 
         array (

@@ -19,36 +19,46 @@ class Form
 
     }
 
-    public function build(): string{
-
+    public function build(): string {
         $html = "";
-
-        if(!empty($this->errors)){
-            foreach ($this->errors as $error){
+    
+        if (!empty($this->errors)) {
+            $html .= "<ul>";
+            foreach ($this->errors as $error) {
                 $html .= "<li>".$error."</li>";
             }
+            $html .= "</ul>";
         }
-
-
+    
         $html .= "<form action='".$this->config["config"]["action"]."' method='".$this->config["config"]["method"]."'>";
-
-        foreach ($this->config["inputs"] as $name=>$input){
-            $html .= "
-                <input 
-                    type='".$input["type"]."' 
-                    name='".$name."' 
-                    placeholder='".$input["placeholder"]."'
-                    ". (($input["required"])?"required":"") ."
-                    ><br>
-            ";
+    
+        foreach ($this->config["inputs"] as $name => $input) {
+            if ($input["type"] === "select") {
+                $html .= "<select name='".$name."' ".(($input["required"]) ? "required" : "").">";
+                foreach ($input["options"] as $value => $label) {
+                    $selected = "";
+                    if ($this->isSubmitted() && isset($_POST[$name]) && $_POST[$name] === $value) {
+                        $selected = "selected";
+                    }
+                    $html .= "<option value='".$value."' ".$selected.">".$label."</option>";
+                }
+                $html .= "</select><br>";
+            } else {
+                $html .= "<input 
+                            type='".$input["type"]."' 
+                            name='".$name."' 
+                            placeholder='".$input["placeholder"]."'
+                            ". (($input["required"]) ? "required" : "") ."
+                        ><br>";
+            }
         }
-
-
+    
         $html .= "<input type='submit' value='".htmlentities($this->config["config"]["submit"])."'>";
         $html .= "</form>";
-
+    
         return $html;
     }
+    
 
     public function isSubmitted(): bool
     {

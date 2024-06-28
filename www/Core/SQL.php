@@ -57,6 +57,28 @@ class SQL
 
     }
 
+    public function newPage()
+    {
+        $columnsAll = get_object_vars($this);
+        $columnsToDelete = get_class_vars(get_class());
+        $columns = array_diff_key($columnsAll, $columnsToDelete);
+
+        // token de validation
+        if (empty($this->getId())) {
+            $sql = "INSERT INTO " . $this->table . " (" . implode(', ', array_keys($columns)) . ")  
+            VALUES (:" . implode(',:', array_keys($columns)) . ")";
+        } else {
+            foreach ($columns as $column => $value) {
+                $sqlUpdate[] = $column . "=:" . $column;
+            }
+
+            $sql = "UPDATE " . $this->table . " SET " . implode(',', $sqlUpdate) . " WHERE id=" . $this->getId();
+        }
+
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->execute($columns);
+
+    }
     public function save()
     {
         $columnsAll = get_object_vars($this);
