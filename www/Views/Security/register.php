@@ -1,3 +1,8 @@
-<h2>S'inscrire</h2>
+<section class="auth">
+    <h2>S'inscrire</h2>
 
-<?= $form ?>
+    <?= $form ?>
+
+    <a class="button button--sm" href="/login">Me connecter</a>
+</section>
+

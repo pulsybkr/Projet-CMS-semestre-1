@@ -7,9 +7,7 @@
         <link rel="stylesheet" href="Asset/scss/style.css">
     </head>
     <body>
-        <h1 class="h1">Template Front</h1>
-        <!-- intégration de la vue -->
-         <main class="main">
+         <main>
             <?php include "../Views/".$this->view.".php";?>
          </main>
     </body>

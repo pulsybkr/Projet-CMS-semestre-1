@@ -118,22 +118,25 @@ class SQL
         $columns = array_diff_key($columnsAll, $columnsToDelete);
 
         if ($this->isEmailAvailable($columns["email"])) {
-            die("Cette adresse n'est pas enregistrée. Veuillez créer un compte.");
+            echo "<p class='notification  notification--danger'>Cette adresse n'est pas enregistrée. Veuillez créer un compte.</p>";
+            return;
         }
 
         if (!$this->isAccountActive($columns["email"])) {
-            die("Ce compte n'est pas activé. Veuillez vérifier votre e-mail.");
+            echo "<p class='notification  notification--danger'>Ce compte n'est pas activé. Veuillez vérifier votre e-mail.";
+            return;
         }
 
         $userId = $this->checkPassword($columns["email"], $password);
 
         if (!$userId) {
-            die("Mot de passe incorrect");
+            echo "<p class='notification  notification--danger'>Mot de passe incorrect";
+            return;
         }
 
         $this->createUserCookie($userId, $columns["email"]);
 
-        echo "Connexion réussie";
+        echo "<p class='notification  notification--success'>Connexion réussie</p>";
         header("Location: /"); 
         
     }
@@ -148,7 +151,8 @@ class SQL
 
         // Vérifier si un utilisateur avec cet email a été trouvé
         if (!$user) {
-            die("L'email n'est pas dans la base de données mon bebou. Je vois ce que tu essaies de faire mais ça ne va pas passer.");
+            echo "<p class='notification  notification--danger'>L'email n'est pas dans la base de données mon bebou. Je vois ce que tu essaies de faire mais ça ne va pas passer.";
+            return;
         }
 
         $token = bin2hex(random_bytes(32));
@@ -162,6 +166,8 @@ class SQL
 
         // Envoyer l'email de réinitialisation de mot de passe
         $this->sendResetEmail($email, $validationLink);
+        echo "<p class='notification  notification--success'>Email envoyé avec success</p>";
+        header("Location: /");
     }
 
     public function update_password($password)
@@ -178,11 +184,13 @@ class SQL
 
         // Vérifier si un utilisateur avec ce token a été trouvé
         if (!$user) {
-            die("Le token n'est pas fonctionnel, mon bebou d'amour.");
+            echo "<p class='notification  notification--danger'>Le token n'est pas fonctionnel, mon bebou d'amour.";
+            return;
         }
 
         if($user && password_verify($password, $user['password'])){
-            die("Le nouveau mot de passe doit être different de l'ancien mon bebou d'amour");
+            echo "<p class='notification  notification--danger'>Le nouveau mot de passe doit être different de l'ancien mon bebou d'amour";
+            return;
         }
 
         // echo "ça passe je ne fais pourquoi ";
@@ -193,9 +201,12 @@ class SQL
         $updateResult = $updateQueryPrepared->execute(['password' => $columns['password'], 'id' => $user['id']]);
 
         if ($updateResult) {
-            echo "Votre mot de passe a été mis à jour avec succès.";
+            echo "<p class='notification  notification--success'>Votre mot de passe a été mis à jour avec succès.</p>";
+            header("Location: /login");
+
         } else {
-            echo "Une erreur s'est produite lors de la mise à jour de votre mot de passe.";
+            echo "<p class='notification  notification--success'>Une erreur s'est produite lors de la mise à jour de votre mot de passe.</p>";
+
         }
     }
 

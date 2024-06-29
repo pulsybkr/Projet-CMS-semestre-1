@@ -1,3 +1,3 @@
-<h2>Invite des nouvelles utilisateurs au projet</h2>
+<h2 class="title-page">Invite des nouveaux utilisateurs au projet</h2>
 
 <?= $form ?>

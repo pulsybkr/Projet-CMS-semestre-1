@@ -14,6 +14,8 @@ class Dashboard
     {
         $sqlPdo = new SqlPdo();
         $this->pdo = $sqlPdo->getPdo();
+        $userModel = new User();
+
         //Appeler un template Front et la vue Main/Home
         $view = new View("Main/user", "Back");
 
@@ -23,16 +25,19 @@ class Dashboard
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['id'];
+            $id = $_POST['user_id'];
             if($view->isAdmin($this->pdo)){
-                echo "t'es admin ";
-                echo $id;
+                if($userModel->deleteUser($this->pdo, $id)){
+                    echo "<p class='notification  notification--success'>Utilisateur supprimer avec success</p>";
+                } else{
+                    echo "<p class='notification  notification--danger'>Erreur je ne sais de quoi</p>";
+                }  
+                
             }else{
-                echo "tu n'as pas les droits necessaires mon ami";
+                echo "<p class='notification  notification--danger'>Vous n'avez pas les droit necessaires pour supprimer un utilisateur</p>";
             }
             // echo $content;
         }
-        $userModel = new User();
         $users = $userModel->getAllUsers($this->pdo);
         // Passer les utilisateurs à la vue
         $view->assign("users", $users);
@@ -43,6 +48,39 @@ class Dashboard
         $view->assign("club", $datas);
         //$view->setView("Main/Home");
         //$view->setTemplate("Front");
+        $view->render();
+    }
+
+    public function profil()
+    {
+        $sqlPdo = new SqlPdo();
+        $this->pdo = $sqlPdo->getPdo();
+        $userModel = new User();
+
+        //Appeler un template Front et la vue Main/Home
+        $view = new View("Main/profil", "Back");
+
+        if(!$view->isLog()){
+            header("Location: /login");
+            exit();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // $id = $_POST['user_id'];
+            // if($view->isAdmin($this->pdo)){
+            //     if($userModel->deleteUser($this->pdo, $id)){
+            //         echo "utilisateur supprimer avec success ";
+            //     } else{
+            //         echo "erreur je ne sais de quoi";
+            //     }  
+                
+            // }else{
+            //     echo "tu n'as pas les droits necessaires mon ami";
+            // }
+            $view->logout();
+            echo "se deconnecter";
+        }
+
         $view->render();
     }
 
@@ -69,23 +107,34 @@ class Dashboard
 
     public function invite()
     {
-        echo "ici c'est pour inviter des utilisateurs au projet";
         $form = new Form("Register");
-
-        if( $form->isSubmitted() && $form->isValid() )
-        {
-            $user = new User();
-            $user->setFirstname($_POST["firstname"]);
-            $user->setLastname($_POST["lastname"]);
-            $user->setEmail($_POST["email"]);
-            // $user->setPassword($_POST["password"]);
-            // $user->save();
-        }
-
+        $sqlPdo = new SqlPdo();
+        $this->pdo = $sqlPdo->getPdo();
         $view = new View("Security/invite", "Back");
         if(!$view->isLog()){
             header("Location: /login");
             exit();
+        }
+        if( $form->isSubmitted() && $form->isValid() )
+        {
+            if($view->isAdmin($this->pdo)){
+                $user = new User();
+                $user->setFirstname($_POST["firstname"]);
+                $user->setLastname($_POST["lastname"]);
+                $user->setEmail($_POST["email"]);
+                $user->setPassword($_POST["password"]);
+                $user->setRole("user");
+                $user->save();
+            } else {
+                echo "<p class='notification  notification--danger'>Vous n'avez pas les droit necessaires pour inviter un utilisateur</p>";
+            }
+            
+        }
+
+        
+        if(!$view->isAdmin($this->pdo)){
+            echo "<p class='notification  notification--danger'>Vous n'avez pas les droit necessaires pour inviter un utilisateur</p>";
+            // header("Location: /");
         }
         $view->assign("form", $form->build());
         $view->render();

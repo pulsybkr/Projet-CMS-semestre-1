@@ -22,6 +22,12 @@
   Controller: "Dashboard"
   Action: "user"
 
+/dashboard/profil:
+  IsAdmin: false
+  Islog: false
+  Controller: "Dashboard"
+  Action: "profil"
+
 /dashboard/invite-user:
   IsAdmin: false
   Islog: false

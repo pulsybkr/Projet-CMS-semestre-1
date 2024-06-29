@@ -86,6 +86,21 @@ class View
         return false;
     }
 
+    public function logout()
+    {
+        // Détruire le cookie en le rendant expiré
+        $cookieName = "esgi_cc";
+        setcookie($cookieName, "", time() - 3600, "/"); 
+        
+        // Effacer également le cookie en mémoire
+        if (isset($_COOKIE[$cookieName])) {
+            unset($_COOKIE[$cookieName]);
+        }
+
+        header("Location: /login"); 
+        exit;
+    }
+
     public function setTemplate(String $template): void
     {
         $template = strtolower(trim($template));

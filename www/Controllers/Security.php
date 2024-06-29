@@ -20,8 +20,6 @@ class Security{
         $view = new View("Security/login");
         $view->assign("form", $form->build());
         $view->render();
-
-
     }
     public function register(): void
     {
