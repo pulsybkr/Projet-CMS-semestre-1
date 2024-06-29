@@ -202,5 +202,47 @@ class User extends SQL
         return $queryPrepared->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public static function isAdminById($pdo, int $userId): bool
+    {
+        $sql = "SELECT role FROM esgi_user WHERE id = :id";
+        $queryPrepared = $pdo->prepare($sql);
+        $queryPrepared->bindValue(':id', $userId, PDO::PARAM_INT);
+        $queryPrepared->execute();
+        $role = $queryPrepared->fetchColumn();
+
+        return $role === self::ROLE_ADMIN;
+    }
+
+    private function userExists(int $userId): bool
+    {
+        $sql = "SELECT COUNT(*) FROM esgi_user WHERE id = :id";
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->bindValue(':id', $userId, PDO::PARAM_INT);
+        $queryPrepared->execute();
+        $count = $queryPrepared->fetchColumn();
+        return $count > 0;
+    }
+
+    public function deleteUser($pdo, int $userId): bool
+    {
+        $this->pdo = $pdo;
+        
+        // Vérifie d'abord si l'utilisateur existe
+        if (!$this->userExists($userId)) {
+            return false;
+        }
+        
+        $sql = "DELETE FROM esgi_user WHERE id = :id";
+        $queryPrepared = $this->pdo->prepare($sql);
+        $queryPrepared->bindValue(':id', $userId, PDO::PARAM_INT);
+        
+        try {
+            $queryPrepared->execute();
+            return true;
+        } catch (\PDOException $e) {
+            // Gérer l'erreur de suppression de l'utilisateur
+            return false;
+        }
+    }
 
 }

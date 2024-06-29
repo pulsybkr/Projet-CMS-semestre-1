@@ -9,7 +9,8 @@ class ClubRegister
             "config" => [
                 "action" => "",
                 "method" => "POST",
-                "submit" => "Créer le club"
+                "submit" => "Créer le club",
+                "class" => "form-container"
             ],
             "inputs" => [
                 "club_name" => [

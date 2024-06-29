@@ -22,7 +22,7 @@ $text_primary: #fff;
 	--light-grey: #ccc;
 	--bkg_second: $bkg_second;
 	--bkg_primary: $bkg_primary;
-	// --main-font: #{$font1};
-
-	--main-radius: #{rem(6)};
+	--main-radius: 8px;
+    --padding-small: 0.5rem 1rem;
+    --padding-large: 1rem 2rem;
 }

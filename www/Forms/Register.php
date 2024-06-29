@@ -9,7 +9,8 @@ class Register
             "config"=>[
                 "action"=>"",
                 "method"=>"POST",
-                "submit"=>"S'inscrire"
+                "submit"=>"S'inscrire",
+                "class" => "form-container"
                 ],
             "inputs"=>[
                 "firstname"=>[

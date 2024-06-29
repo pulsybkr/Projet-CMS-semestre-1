@@ -15,16 +15,25 @@ class Dashboard
         $sqlPdo = new SqlPdo();
         $this->pdo = $sqlPdo->getPdo();
         //Appeler un template Front et la vue Main/Home
-        $view = new View("Main/dashboard", "Back");
+        $view = new View("Main/user", "Back");
 
         if(!$view->isLog()){
             header("Location: /login");
             exit();
         }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'];
+            if($view->isAdmin($this->pdo)){
+                echo "t'es admin ";
+                echo $id;
+            }else{
+                echo "tu n'as pas les droits necessaires mon ami";
+            }
+            // echo $content;
+        }
         $userModel = new User();
         $users = $userModel->getAllUsers($this->pdo);
-
-
         // Passer les utilisateurs à la vue
         $view->assign("users", $users);
         $club = new Validate();
@@ -133,8 +142,9 @@ class Dashboard
                 // Si le type de page n'existe pas encore, procède à l'insertion
                 $page->newPage(); // Hypothétique méthode pour ajouter la page dans la base de données
                 echo "Page créée avec succès.";
-            }
 
+            }
+            header("Location: /dashboard/manages-pages");
         }
 
         $view = new View("Security/create_page", "Back");
@@ -152,11 +162,11 @@ class Dashboard
     {
         $sqlPdo = new SqlPdo();
         $this->pdo = $sqlPdo->getPdo();
-        $pages = new Page();
+        $pagesModel = new Page();
 
         if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             $id = (int)$_GET['id']; 
-            $page = $pages->getPageById($this->pdo, $id);
+            $page = $pagesModel->getPageById($this->pdo, $id);
         } else {
             // Gérer le cas où 'id' n'est pas présent ou n'est pas valide
             header("Location: /error");
@@ -175,9 +185,12 @@ class Dashboard
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $content = $_POST['content'];
-            $pages->updatePageContent($this->pdo, $page['id'],  $content);
+            $pagesModel->updatePageContent($this->pdo, $page['id'],  $content);
             // echo $content;
         }
+        $pages = $pagesModel->getAllPages($this->pdo);
+        // Passer les utilisateurs à la vue
+        $view->assign("pages", $pages);
 
         $view->assign("page", $page);
         $view->render();

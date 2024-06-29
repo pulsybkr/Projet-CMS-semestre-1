@@ -9,7 +9,8 @@ class PageRegister
             "config" => [
                 "action" => "",
                 "method" => "POST",
-                "submit" => "Créer la page"
+                "submit" => "Créer la page",
+                "class" => "form-container"
             ],
             "inputs" => [
                 "page_name" => [

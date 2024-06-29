@@ -9,7 +9,8 @@ class Login
             "config"=>[
                 "action"=>"",
                 "method"=>"POST",
-                "submit"=>"Se connecter"
+                "submit"=>"Se connecter",
+                "class" => "form-container"
             ],
             "inputs"=>[
                 "email"=>[

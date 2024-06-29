@@ -4,9 +4,21 @@
     padding: 0;
 }
 
-body {
-	color: var(--text-color);
-	font-family: var(--main-font);
+body{
+    background-color: $bkg_primary;
+    color: $text_primary;
+    font-family: sans-serif;
+    width: 100%;
+    position: relative;
+}
+
+a{
+	color: inherit !important;
+	text-decoration: none !important;
+}
+
+ul, li{
+	list-style: none;
 }
 
 p {

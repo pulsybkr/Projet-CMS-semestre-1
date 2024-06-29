@@ -134,6 +134,7 @@ class SQL
         $this->createUserCookie($userId, $columns["email"]);
 
         echo "Connexion réussie";
+        header("Location: /"); 
         
     }
 

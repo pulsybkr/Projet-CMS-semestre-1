@@ -2,12 +2,13 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Ceci est mon back</title>
-        <meta name="description" content="Super site avec une magnifique intégration">
+        <title>Tableau de bord</title>
+        <meta name="description" content="le site de ton club de foot preferé">
+        <link rel="stylesheet" href="http://localhost/Asset/scss/style.css">
     </head>
     <body>
-    <header>
-    <?php if (!empty($club)): ?>
+    <header class="header">
+        <?php if (!empty($club)): ?>
             <h2>
                 <?php echo htmlspecialchars($club->getName()); ?>
             </h2>
@@ -15,7 +16,7 @@
         <h3>Tableau de bord</h3>
         <button>User</button>
     </header>
-    <section>
+    <section class="nav">
         <ul>
             <li><a href="/dashboard/">Tableau de bord</a></li>
             <li><a href="/dashboard/user">Utilisateur</a></li>
@@ -25,8 +26,8 @@
         </ul>
     </section>
         <!-- intégration de la vue -->
-        <main>
+        <main class="main">
             <?php include "../Views/".$this->view.".php";?>
-        </main>
+         </main>
     </body>
 </html>

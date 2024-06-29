@@ -1,47 +1,49 @@
 .button {
-	// reset
-	display: inline-block;
-	line-height: 1;
-	text-decoration: none;
-	border: none;
-	cursor: pointer;
+    // reset
+    display: inline-block;
+    line-height: 1;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
 
-	// Variables du composant
-	--padding: #{rem(10)} #{rem(16)};
-	--fontSize: 1rem;
+    // Variables du composant
+    --padding: #{rem(10)} #{rem(16)};
+    --fontSize: 1rem;
+    --bg-color: var(--bg-color, #e0e0e0);
+    --text-color: var(--text-color, #000);
+    --border-radius: var(--main-radius);
 
-	// Utilisation de ces variables
-	font-size: var(--fontSize);
-	padding: var(--padding);
-	background-color: var(--bg-color);
-	color: var(--text-color);
-	border-radius: var(--main-radius);
-	font-weight: 600; 
+    // Utilisation de ces variables
+    font-size: var(--fontSize);
+    padding: var(--padding);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-radius: var(--border-radius);
+    font-weight: 600; 
     
-	// Modificateurs de couleur (nlles valeurs pour les variables locales)
-	&--primary {
-		--bg-color: var(--primary);
-		--text-color: var(--white);
-	}
+    // Modificateurs de couleur (nlles valeurs pour les variables locales)
+    &--primary {
+        --bg-color: var(--primary);
+        --text-color: var(--white);
+    }
 
-	&--secondary {
-		--bg-color: var(--secondary);
-		--text-color: var(--white);
-	}
+    &--secondary {
+        --bg-color: var(--secondary);
+        --text-color: var(--white);
+    }
 
-	&--danger {
-		--bg-color: var(--danger);
-		--text-color: var(--white);
-	}
+    &--danger {
+        --bg-color: var(--danger);
+        --text-color: var(--white);
+    }
 
-// 	// Modificateurs de taille (nlles valeurs pour les variables locales)
+    // Modificateurs de taille (nlles valeurs pour les variables locales)
+    &--lg {
+        --padding: var(--padding-large);
+    }
 
-	&--lg {
-		--padding: #{rem(16)} #{rem(24)};
-	}
-
-	&--sm {
-		--fontSize: #{rem(14)};
-		--padding: #{rem(8)} #{rem(12)};
-	}
+    &--sm {
+        --fontSize: #{rem(14)};
+        --padding: var(--padding-small);
+    }
 }

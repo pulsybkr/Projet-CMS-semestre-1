@@ -9,7 +9,8 @@ class Reset_pwd
             "config"=>[
                 "action"=>"",
                 "method"=>"POST",
-                "submit"=>"Valider"
+                "submit"=>"Valider",
+                "class" => "form-container"
             ],
             "inputs"=>[
                 "email"=>[

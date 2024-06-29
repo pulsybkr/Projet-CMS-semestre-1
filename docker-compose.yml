@@ -65,6 +65,11 @@ services:
       - "9090:80"
     depends_on:
       - mariadb
+  
+  sass:
+    image: larryprice/sass
+    volumes:
+      - ./:/src
 
 volumes:
   mariadb_data:

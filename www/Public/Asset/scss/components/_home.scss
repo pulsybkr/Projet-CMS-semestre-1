@@ -1,9 +1,4 @@
 
-body{
-    background-color: $bkg_primary;
-    color: $text_primary;
-    font-family: sans-serif;
-}
 
 .home{
     padding: 48px;
@@ -58,6 +53,10 @@ body{
         }
     }
     
+}
+
+#gjs {
+    height: 100%;
 }
 
 .button {

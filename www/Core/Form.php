@@ -30,7 +30,7 @@ class Form
             $html .= "</ul>";
         }
     
-        $html .= "<form action='".$this->config["config"]["action"]."' method='".$this->config["config"]["method"]."'>";
+        $html .= "<form class='".$this->config["config"]["class"]."' action='".$this->config["config"]["action"]."' method='".$this->config["config"]["method"]."'>";
     
         foreach ($this->config["inputs"] as $name => $input) {
             if ($input["type"] === "select") {

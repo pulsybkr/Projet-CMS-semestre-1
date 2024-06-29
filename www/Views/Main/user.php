@@ -1,24 +1,29 @@
-
-<h1>Liste des utilisateurs</h1>
-    <table>
+<main>
+    <h1 class="title-page">Liste des utilisateurs</h1>
+    <table class="table-page">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Nom</th>
                 <th>Prénom</th>
                 <th>Email</th>
                 <th>Role</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             <?php if (!empty($users)): ?>
                 <?php foreach ($users as $user): ?>
                     <tr>
-                        <td><?php echo htmlspecialchars($user['id']); ?></td>
                         <td><?php echo htmlspecialchars($user['lastname']); ?></td>
                         <td><?php echo htmlspecialchars($user['firstname']); ?></td>
                         <td><?php echo htmlspecialchars($user['email']); ?></td>
                         <td><?php echo htmlspecialchars($user['role']); ?></td>
+                        <td>
+                            <form method="post" action="">
+                                <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                                <button class="button button--danger button--sm" type="submit" name="delete_user">Supprimer</button>
+                            </form>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
@@ -29,8 +34,5 @@
         </tbody>
     </table>
 
-    <button>
-        <a href="/dashboard/invite-user">Inviter des utilisateurs</a>
-    </button>
+    <a class="button button--primary button--sm" href="/dashboard/invite-user">Inviter des utilisateurs</a>
 </main>
-    

@@ -37,15 +37,6 @@
             'reference' => 'fbd48bce38f73f8a4ec8583362e732e4095e5862',
             'dev_requirement' => false,
         ),
-        'hansschouten/phpagebuilder' => array(
-            'pretty_version' => 'v0.27.0',
-            'version' => '0.27.0.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../hansschouten/phpagebuilder',
-            'aliases' => array(),
-            'reference' => '73de1109c77704cf5ce25fe7dc25f5888f8c265e',
-            'dev_requirement' => false,
-        ),
         'phpmailer/phpmailer' => array(
             'pretty_version' => 'v6.9.1',
             'version' => '6.9.1.0',

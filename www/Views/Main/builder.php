@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Builder</title>
+    <link href="styles.css" rel="stylesheet">
     <link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet"/>
     <style>
         body, html {
@@ -19,7 +20,7 @@
     <?php if (!empty($page)): ?>
         <form id="editForm" method="post" action="">
             <div id="gjs"><?php echo $page['content']; ?></div>
-            <input type="hidden" name="content" id="content">
+            <input class="button" type="hidden" name="content" id="content">
             <button type="submit">Save Page</button>
         </form>
         <script src="https://unpkg.com/grapesjs"></script>
@@ -54,9 +55,11 @@
                 content: `
                     <nav class="my-menu">
                         <ul>
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Contact</a></li>
+                         <?php if (!empty($pages)): ?>
+                            <?php foreach ($pages as $page): ?>
+                            <li><a href="/front/<?php echo $page['type']; ?>"><?php echo $page['title']; ?></a></li>
+                           <?php endforeach; ?>
+                        <?php endif; ?>
                         </ul>
                     </nav>
                 `,
@@ -79,7 +82,7 @@
                 fetch('update_page.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ content: content, id: <?php echo $page['content']; ?> })
+                    body: JSON.stringify({ content: content, id:  })
                 }).then(response => response.json())
                 .then(data => alert(data.message));
 

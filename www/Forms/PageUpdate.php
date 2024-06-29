@@ -9,7 +9,8 @@ class PageUpdate
             "config" => [
                 "action" => "",
                 "method" => "POST",
-                "submit" => "Enregister les modifications de la page"
+                "submit" => "Enregister les modifications de la page",
+                "class" => "form-container"
             ],
             "inputs" => [
               
