@@ -235,6 +235,7 @@ class Dashboard
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $content = $_POST['content'];
             $pagesModel->updatePageContent($this->pdo, $page['id'],  $content);
+            header("Location: /dashboard/manages-pages");
             // echo $content;
         }
         $pages = $pagesModel->getAllPages($this->pdo);
@@ -245,6 +246,39 @@ class Dashboard
         $view->render();
         //Déconnexion
         //Redirection
+    }
+
+    public function delete_page()
+    {
+        $sqlPdo = new SqlPdo();
+        $this->pdo = $sqlPdo->getPdo();
+        $pagesModel = new Page();
+
+        if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+            $id = (int)$_GET['id']; 
+            $page = $pagesModel->deletePageById($this->pdo, $id);
+        } else {
+            // Gérer le cas où 'id' n'est pas présent ou n'est pas valide
+            header("Location: /error");
+            exit();
+        }
+
+        $view = new View("Main/delete-page", "Back");
+        if (!$view->isLog()) {
+            header("Location: /login");
+            exit();
+        }
+
+        if(!$page){
+            die("page non trouver veuiller reessayer");
+        }else{
+            echo "<p class='notification  notification--success'>Page supprimer avec success</p>";
+            header("Location: /dashboard/manages-pages");
+        }
+
+
+        $view->assign("page", $page);
+        $view->render();
     }
 
     public function website_manager()

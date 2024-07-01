@@ -4,6 +4,36 @@
   Controller: "Main"
   Action: "home"
 
+/front/home:
+  IsAdmin: false
+  Islog: false
+  Controller: "Front"
+  Action: "home"
+
+/front/about:
+  IsAdmin: false
+  Islog: false
+  Controller: "Front"
+  Action: "about"
+
+/front/contact:
+  IsAdmin: false
+  Islog: false
+  Controller: "Front"
+  Action: "contact"
+
+/front/forum:
+  IsAdmin: false
+  Islog: false
+  Controller: "Front"
+  Action: "forum"
+
+/front/actu:
+  IsAdmin: false
+  Islog: false
+  Controller: "Front"
+  Action: "actu"
+
 /dashboard:
   IsAdmin: false
   Islog: false
@@ -21,6 +51,12 @@
   Islog: false
   Controller: "Dashboard"
   Action: "user"
+
+/dashboard/manage-pages/delete-page:
+  IsAdmin: false
+  Islog: false
+  Controller: "Dashboard"
+  Action: "delete_page"
 
 /dashboard/profil:
   IsAdmin: false

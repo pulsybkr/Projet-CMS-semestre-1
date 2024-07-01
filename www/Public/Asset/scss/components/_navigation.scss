@@ -1,0 +1,17 @@
+.nav_bar{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    background-color: red;
+}
+
+.logo{
+    background-color: red;
+}
+
+.footer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+}

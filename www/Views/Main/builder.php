@@ -20,7 +20,10 @@
 <body>
     <?php if (!empty($page)): ?>
         <form id="editForm" method="post" action="">
-            <div id="gjs"><?php echo $page['content']; ?></div>
+            <div id="gjs"> 
+                <style><?php echo $page['css']; ?></style>
+                <?php echo $page['content']; ?>
+            </div>
             <input class="button" type="hidden" name="content" id="content">
             <button class="button button--primary button--sm" type="submit">Enregistrer les modifications</button>
         </form>
@@ -65,11 +68,17 @@
             editor.BlockManager.add('menu', {
                 label: 'Menu',
                 content: `
-                    <nav class="menu">
-                        <a href="/">Home</a>
-                        <a href="/about">About</a>
-                        <a href="/services">Services</a>
-                        <a href="/contact">Contact</a>
+                    <nav class="nav_bar">
+                        <div class="logo">
+                            <a href="/">Logo</a>
+                        </div>
+                        <ul>
+                            <?php if (!empty($pages)): ?>
+                                <?php foreach ($pages as $page): ?>
+                                    <li><a href="/front/<?php echo $page["type"]; ?>"><?php echo $page["title"]; ?></a></li>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </ul>
                     </nav>
                 `,
                 category: 'Basic',
@@ -77,13 +86,13 @@
 
             editor.BlockManager.add('header', {
                 label: 'Header',
-                content: '<header><h1>Welcome to my website</h1></header>',
+                content: '<h1>Welcome to my website</h1>',
                 category: 'Basic',
             });
 
             editor.BlockManager.add('footer', {
                 label: 'Footer',
-                content: '<footer><p>© 2024 My Website</p></footer>',
+                content: '<footer class="footer"><p>© 2024 My Website</p></footer>',
                 category: 'Basic',
             });
 
@@ -188,7 +197,6 @@
                 attributes: { class: 'gjs-fonts gjs-f-h3p' }
             });
 
-
             editor.BlockManager.add('container-block', {
                 label: 'Container Block',
                 content: '<div class="container-block" style="padding: 10px; border: 1px solid #ddd; min-height: 100px;"></div>',
@@ -237,39 +245,19 @@
                         <h3>Entraînement</h3>
                         <p><strong>Date:</strong> 20 juillet 2024</p>
                         <p><strong>Heure:</strong> 10:00 - 12:00</p>
-                        <p><strong>Lieu:</strong> Terrain d'entraînement</p>
-                        <a href="#" class="btn btn-primary">Détails</a>
+                        <p><strong>Lieu:</strong> Centre d'entraînement</p>
                     </div>
                 `,
                 category: 'Events',
                 attributes: { class: 'gjs-fonts gjs-f-button' }
             });
 
-            // Bloc Conférence de Presse
-            editor.BlockManager.add('press-conference', {
-                label: 'Conférence de Presse',
-                content: `
-                    <div class="press-conference">
-                        <h3>Conférence de Presse</h3>
-                        <p><strong>Date:</strong> 25 juillet 2024</p>
-                        <p><strong>Heure:</strong> 14:00 - 15:00</p>
-                        <p><strong>Lieu:</strong> Salle de conférence</p>
-                        <a href="#" class="btn btn-primary">Détails</a>
-                    </div>
-                `,
-                category: 'Events',
-                attributes: { class: 'gjs-fonts gjs-f-button' }
-            });
-
-
-            document.getElementById('editForm').addEventListener('submit', function () {
-                const htmlContent = editor.getHtml();
-                const cssContent = editor.getCss();
-                const content = `<style>${cssContent}</style>${htmlContent}`;
-                document.getElementById('content').value = content;
-            });
+            // Enregistrer le contenu avant de soumettre le formulaire
+            document.getElementById('editForm').onsubmit = function() {
+                document.getElementById('content').value = editor.getHtml() + "<style>" + editor.getCss() + "</style>";
+                return true;
+            };
         </script>
-        
     <?php endif; ?>
 </body>
 </html>

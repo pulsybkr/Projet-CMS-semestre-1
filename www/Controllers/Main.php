@@ -35,6 +35,30 @@ class Main
         //$view->setTemplate("Front");
         $view->render();
     }
+
+    public function front()
+    {
+        //Appeler un template Front et la vue Main/Home
+        $view = new View("Main/home");
+        $sql = new \App\Core\SQL();
+        $validate = new Validate();
+        $sqlPdo = new SqlPdo();
+        $pdo = $sqlPdo->getPdo();
+        $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+        // Analyse l'URL et récupère le chemin
+        $parsed_url = parse_url($url);
+        $path = $parsed_url['path'];
+
+        // Supprime la partie "/front/" du chemin
+        $after_front = str_replace('/front/', '', $path);
+
+        echo $after_front;
+
+        //$view->setView("Main/Home");
+        //$view->setTemplate("Front");
+        $view->render();
+    }
     public function logout()
     {
         //Déconnexion

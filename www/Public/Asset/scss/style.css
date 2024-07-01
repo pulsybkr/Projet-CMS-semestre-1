@@ -405,6 +405,15 @@ p {
       border-radius: 50px;
       width: 100%; }
 
+.nav_bar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  background-color: red; }
+
+.logo {
+  background-color: red; }
+
 .main {
   position: relative;
   padding-top: 100px;
@@ -520,6 +529,12 @@ p {
       cursor: pointer;
       margin-top: 15px; }
 
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px; }
+
 .notification {
   position: fixed;
   top: 20px;
@@ -552,5 +567,20 @@ p {
   .notification--danger {
     background-color: #f44336;
     color: #fff; }
+
+.nav_bar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  background-color: red; }
+
+.logo {
+  background-color: red; }
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px; }
 
 /*# sourceMappingURL=style.css.map */
