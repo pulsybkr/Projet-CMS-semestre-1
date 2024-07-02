@@ -4,7 +4,10 @@
         <meta charset="UTF-8">
         <title>Tableau de bord</title>
         <meta name="description" content="le site de ton club de foot preferé">
-        <link rel="stylesheet" href="http://localhost/Asset/scss/style.css">
+        <link rel="stylesheet" href="http://<?php 
+                                    $domain = $_SERVER['HTTP_HOST'];
+                                    echo $domain;
+                                ?>/Asset/scss/style.css">
     </head>
     <body>
     <header class="header">

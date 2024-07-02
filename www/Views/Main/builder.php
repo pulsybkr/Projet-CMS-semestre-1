@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Builder</title>
     <!-- Assurez-vous que le CSS compilé est correctement lié ici -->
-    <link rel="stylesheet" href="http://localhost/Asset/css/style.css">
+    <link rel="stylesheet" href="http://<?php 
+            $domain = $_SERVER['HTTP_HOST'];
+            echo $domain;
+        ?>/Asset/css/style.css">
     <link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet"/>
     <style>
         body, html {
@@ -41,7 +44,10 @@
                 },
                 canvas: {
                     styles: [
-                        'http://localhost/Asset/css/style.css'
+                        'http://<?php 
+                            $domain = $_SERVER['HTTP_HOST'];
+                            echo $domain;
+                        ?>/Asset/css/style.css'
                     ]
                 }
             });

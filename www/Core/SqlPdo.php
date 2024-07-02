@@ -9,7 +9,8 @@ class SqlPdo{
     public function __construct()
     {
         try {
-            $this->pdo = new PDO("mysql:host=mariadb;dbname=esgi;port=3306", "esgi", "esgipwd");
+            $this->pdo = new PDO("pgsql:host=postgres;dbname=esgi;port=5432", "esgi", "esgipwd");
+
         } catch (\PDOException $e) {
             die("Erreur SQL : " . $e->getMessage());
         }

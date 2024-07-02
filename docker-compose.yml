@@ -11,25 +11,14 @@ services:
       - composer
     environment:
       - JWT_SECRET_KEY=o58BDHpCdnI4Y6iYtmk9RLJ5IVbB8svfsPw09kjiupAMrab0vO4JdXmZunG3kSat
+      - DOMAIN=localhost
+
 
   composer:
     image: composer:latest
     volumes:
       - ./www:/var/www/
     working_dir: /var/www/
-
-  mariadb:
-    image: mariadb
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: esgipwd
-      MYSQL_DATABASE: esgi
-      MYSQL_USER: esgi
-      MYSQL_PASSWORD: esgipwd
-    ports:
-      - "3306:3306"
-    volumes:
-      - mariadb_data:/var/lib/mysql
 
   postgres:
     image: postgres
@@ -62,7 +51,7 @@ services:
     ports:
       - "9090:80"
     depends_on:
-      - mariadb
+      - postgres
 
   nginx:
     image: nginx:latest

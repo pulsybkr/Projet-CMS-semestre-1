@@ -4,7 +4,10 @@
         <meta charset="UTF-8">
         <title>Ceci est mon front</title>
         <meta name="description" content="Super site avec une magnifique intégration">
-        <link rel="stylesheet" href="http://localhost/Asset/scss/style.css">
+        <link rel="stylesheet" href="http://<?php 
+                                    $domain = $_SERVER['HTTP_HOST'];
+                                    echo $domain;
+                                ?>/Asset/scss/style.css">
     </head>
     <body>
          <main>

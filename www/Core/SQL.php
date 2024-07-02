@@ -16,7 +16,8 @@ class SQL
     public function __construct()
     {
         try {
-            $this->pdo = new PDO("mysql:host=mariadb;dbname=esgi;port=3306", "esgi", "esgipwd");
+            $this->pdo = new PDO("pgsql:host=postgres;dbname=esgi;port=5432", "esgi", "esgipwd");
+
         } catch (\PDOException $e) {
             die("Erreur SQL : " . $e->getMessage());
         }
@@ -106,7 +107,8 @@ class SQL
         // Envoyer l'email de validation
         $toEmail = $columns['email'];
         $toName = $columns['firstname'];
-        $validationLink = "http://localhost/validate?token=$tokenValidation&email=$toEmail";
+        $domain = getenv('DOMAIN');
+        $validationLink = "http://$domain/validate?token=$tokenValidation&email=$toEmail";
         $this->sendValidationEmail($toEmail, $toName, $validationLink);
     }
 
@@ -161,8 +163,8 @@ class SQL
         $updateSql = "UPDATE esgi_user SET token_reset_pwd = :token WHERE id = :id";
         $updateQueryPrepared = $this->pdo->prepare($updateSql);
         $updateQueryPrepared->execute(['token' => $token, 'id' => $user['id']]);
-
-        $validationLink = "http://localhost/reset_password?token=$token";
+        $domain = getenv('DOMAIN');
+        $validationLink = "http://$domain/reset_password?token=$token";
 
         // Envoyer l'email de réinitialisation de mot de passe
         $this->sendResetEmail($email, $validationLink);
