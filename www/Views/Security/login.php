@@ -1,3 +1,7 @@
+<?php 
+    $domain = $_SERVER['HTTP_HOST'];
+    echo $domain;
+?>
 <section class="auth">
     <h2>Se connecter</h2>
 
