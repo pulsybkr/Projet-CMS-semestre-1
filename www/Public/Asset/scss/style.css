@@ -279,6 +279,8 @@ p {
       flex-direction: column;
       justify-content: center;
       padding: 50px; }
+      .home .containt section .next {
+        margin-top: 20px; }
       .home .containt section .logo {
         display: flex; }
         .home .containt section .logo img {
@@ -314,7 +316,7 @@ p {
   text-decoration: none;
   border: none;
   cursor: pointer;
-  --padding: rem(10) rem(16);
+  --padding: 10px 16px;
   --fontSize: 1rem;
   font-size: var(--fontSize);
   padding: var(--padding);
@@ -332,10 +334,10 @@ p {
     --bg-color: var(--danger);
     --text-color: var(--white); }
   .button--lg {
-    --padding: rem(16) rem(24); }
+    --padding: 16px 24px; }
   .button--sm {
-    --fontSize: rem(14);
-    --padding: rem(8) rem(12); }
+    --fontSize: 14px;
+    --padding: 8px 12px; }
 
 .button {
   display: inline-block;
@@ -343,7 +345,7 @@ p {
   text-decoration: none;
   border: none;
   cursor: pointer;
-  --padding: rem(10) rem(16);
+  --padding: 10px 16px;
   --fontSize: 1rem;
   --bg-color: var(--bg-color, #e0e0e0);
   --text-color: var(--text-color, #000);
@@ -366,7 +368,7 @@ p {
   .button--lg {
     --padding: var(--padding-large); }
   .button--sm {
-    --fontSize: rem(14);
+    --fontSize: 14px;
     --padding: var(--padding-small); }
 
 .header {
@@ -404,15 +406,6 @@ p {
       background-color: var(--danger);
       border-radius: 50px;
       width: 100%; }
-
-.nav_bar {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  background-color: red; }
-
-.logo {
-  background-color: red; }
 
 .main {
   position: relative;
@@ -468,6 +461,13 @@ p {
     .main .form-container input[type="password"],
     .main .form-container select,
     .main .form-container textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 10px; }
+    .main .form-container input[type="textarea"] {
       width: 100%;
       padding: 10px;
       font-size: 16px;
@@ -568,13 +568,71 @@ p {
     background-color: #f44336;
     color: #fff; }
 
+.article-container {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+  .article-container h2 {
+    margin-top: 0;
+    color: black !important; }
+  .article-container p {
+    color: black !important; }
+  .article-container .author {
+    font-style: italic;
+    color: #666 !important; }
+  .article-container .comment-btn, .article-container .view-comments-btn {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer; }
+    .article-container .comment-btn:hover, .article-container .view-comments-btn:hover {
+      background-color: #0056b3; }
+  .article-container .comment-form-container, .article-container .comments-container {
+    display: none;
+    margin-top: 10px; }
+  .article-container .comment-form-container textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical; }
+  .article-container .comment-form-container button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #28A745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer; }
+    .article-container .comment-form-container button:hover {
+      background-color: #218838; }
+  .article-container .comments-container .comment {
+    padding: 10px;
+    border-bottom: 1px solid #ddd; }
+    .article-container .comments-container .comment:last-child {
+      border-bottom: none; }
+    .article-container .comments-container .comment p {
+      margin: 0; }
+    .article-container .comments-container .comment .report-btn {
+      margin-top: 5px;
+      padding: 5px 10px;
+      background-color: #dc3545;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer; }
+      .article-container .comments-container .comment .report-btn:hover {
+        background-color: #c82333; }
+
 .nav_bar {
   display: flex;
   width: 100%;
   justify-content: space-between;
-  background-color: red; }
-
-.logo {
   background-color: red; }
 
 .footer {

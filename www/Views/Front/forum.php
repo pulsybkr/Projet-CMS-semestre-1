@@ -1,1 +1,3 @@
-<h1>Page d'echange entre fan</h1>
+<?php if (!empty($content)): ?>
+    <?php echo $content; ?>
+<?php endif; ?>

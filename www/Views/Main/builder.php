@@ -1,30 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Builder</title>
     <!-- Assurez-vous que le CSS compilé est correctement lié ici -->
-    <link rel="stylesheet" href="http://<?php 
-            $domain = $_SERVER['HTTP_HOST'];
-            echo $domain;
-        ?>/Asset/css/style.css">
-    <link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="http://<?php
+    $domain = $_SERVER['HTTP_HOST'];
+    echo $domain;
+    ?>/Asset/css/style.css">
+
+    <link href="https://unpkg.com/grapesjs/dist/css/grapes.min.css" rel="stylesheet" />
     <style>
-        body, html {
+        body,
+        html {
             height: 100%;
             margin: 0;
         }
+
         #gjs {
             height: 100%;
         }
     </style>
+    <script src="http://<?php
+    $domain = $_SERVER['HTTP_HOST'];
+    echo $domain;
+    ?>/Asset/script.js"></script>
 </head>
+
 <body>
     <?php if (!empty($page)): ?>
         <form id="editForm" method="post" action="">
-            <div id="gjs"> 
-                <style><?php echo $page['css']; ?></style>
+            <div id="gjs">
+                <style>
+                    <?php echo $page['css']; ?>
+                </style>
                 <?php echo $page['content']; ?>
             </div>
             <input class="button" type="hidden" name="content" id="content">
@@ -44,13 +55,13 @@
                 },
                 canvas: {
                     styles: [
-                        'http://<?php 
-                            $domain = $_SERVER['HTTP_HOST'];
-                            echo $domain;
+                        'http://<?php
+                        $domain = $_SERVER['HTTP_HOST'];
+                        echo $domain;
                         ?>/Asset/css/style.css'
-                    ]
-                }
-            });
+                            ]
+                        }
+                    });
 
             // Ajouter des blocs personnalisés
             editor.BlockManager.add('my-block', {
@@ -74,19 +85,19 @@
             editor.BlockManager.add('menu', {
                 label: 'Menu',
                 content: `
-                    <nav class="nav_bar">
-                        <div class="logo">
-                            <a href="/">Logo</a>
-                        </div>
-                        <ul>
-                            <?php if (!empty($pages)): ?>
-                                <?php foreach ($pages as $page): ?>
-                                    <li><a href="/front/<?php echo $page["type"]; ?>"><?php echo $page["title"]; ?></a></li>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </ul>
-                    </nav>
-                `,
+                                <nav class="nav_bar">
+                                    <div class="logo">
+                                        <a href="/">Logo</a>
+                                    </div>
+                                    <ul>
+                                        <?php if (!empty($pages)): ?>
+                                                        <?php foreach ($pages as $page): ?>
+                                                                        <li><a href="/front/<?php echo $page["type"]; ?>"><?php echo $page["title"]; ?></a></li>
+                                                        <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </ul>
+                                </nav>
+                            `,
                 category: 'Basic',
             });
 
@@ -102,77 +113,116 @@
                 category: 'Basic',
             });
 
-            editor.BlockManager.add('article', {
-                label: 'Article',
-                content: `
-                    <article>
-                        <h2>Article Title</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                    </article>
-                `,
-                category: 'Basic',
-            });
+            <?php if (!empty($articles)): ?>
+                <?php foreach ($articles as $article): ?>
+                    editor.BlockManager.add('article', {
+                        label: 'Article',
+                        content: `
+                                                         <div class="article-container">
+                        <article>
+                            <h2><?php echo htmlspecialchars($article["title"]); ?></h2>
+                            <p><?php echo nl2br(htmlspecialchars($article["content"])); ?></p>
+                            <p class="author">Écrit par <?php echo htmlspecialchars($article["author"]); ?></p>
+                        </article>
+                        <button class="comment-btn" data-article-id="<?php echo $article['id']; ?>">Laisser un commentaire</button>
+                        <div class="comment-form-container" id="comment-form-<?php echo $article['id']; ?>">
+                            <form method="POST" action="">
+                                <input type="hidden" name="article_id" value="<?php echo $article['id']; ?>">
+                                <textarea name="comment" required placeholder="Votre commentaire..."></textarea>
+                                <button type="submit">Envoyer</button>
+                            </form>
+                        </div>
+                        <form method="GET" action="">
+                                            <input type="hidden" name="article_id" value="<?php echo $article['id']; ?>">
+                                            <button type="submit" class="view-comments-btn" data-article-id="<?php echo $article['id']; ?>">Voir les commentaires</button>
+                                        </form>
+                        <div class="comments-container" id="comments-<?php echo $article['id']; ?>">
+                            <?php
+                            // Charger les commentaires pour cet article
+                            if (!empty($comments)):
+                                foreach ($comments as $comment):
+                                    ?>
+                                                <div class="comment">
+                                                    <p><?php echo htmlspecialchars($comment['content']); ?></p>
+                                                    <form method="POST" action="">
+                                                        <input type="hidden" name="comment_id" value="<?php echo $comment['id']; ?>">
+                                                        <button type="submit" class="report-btn">Signaler</button>
+                                                    </form>
+                                                </div>
+                                            <?php
+                                endforeach;
+                            else:
+                                ?>
+                                        <p>Aucun commentaire pour cet article.</p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                                                    `,
+                        category: 'Article',
+                    });
+                <?php endforeach; ?>
+            <?php endif; ?>
 
             editor.BlockManager.add('image-gallery', {
                 label: 'Image Gallery',
                 content: `
-                    <div class="image-gallery">
-                        <img src="http://placekitten.com/200/300" alt="Kitten 1">
-                        <img src="http://placekitten.com/200/300" alt="Kitten 2">
-                        <img src="http://placekitten.com/200/300" alt="Kitten 3">
-                    </div>
-                `,
+                                <div class="image-gallery">
+                                    <img src="http://placekitten.com/200/300" alt="Kitten 1">
+                                    <img src="http://placekitten.com/200/300" alt="Kitten 2">
+                                    <img src="http://placekitten.com/200/300" alt="Kitten 3">
+                                </div>
+                            `,
                 category: 'Media',
             });
 
             editor.BlockManager.add('contact-form', {
                 label: 'Contact Form',
                 content: `
-                    <form class="contact-form">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message"></textarea>
-                        <button type="submit">Submit</button>
-                    </form>
-                `,
+                                <form class="contact-form">
+                                    <label for="name">Name</label>
+                                    <input type="text" id="name" name="name">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" name="email">
+                                    <label for="message">Message</label>
+                                    <textarea id="message" name="message"></textarea>
+                                    <button type="submit">Submit</button>
+                                </form>
+                            `,
                 category: 'Forms',
             });
 
             editor.BlockManager.add('login-form', {
                 label: 'Login Form',
                 content: `
-                    <form class="login-form">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="username">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password">
-                        <button type="submit">Login</button>
-                    </form>
-                `,
+                                <form class="login-form">
+                                    <label for="username">Username</label>
+                                    <input type="text" id="username" name="username">
+                                    <label for="password">Password</label>
+                                    <input type="password" id="password" name="password">
+                                    <button type="submit">Login</button>
+                                </form>
+                            `,
                 category: 'Forms',
             });
 
             editor.BlockManager.add('comment-section', {
                 label: 'Comment Section',
                 content: `
-                    <div class="comment-section">
-                        <h3>Comments</h3>
-                        <div class="comment">
-                            <p><strong>User 1:</strong> This is a great post!</p>
-                        </div>
-                        <div class="comment">
-                            <p><strong>User 2:</strong> Thanks for sharing this information.</p>
-                        </div>
-                        <form class="comment-form">
-                            <label for="comment">Add a comment</label>
-                            <textarea id="comment" name="comment"></textarea>
-                            <button type="submit">Submit</button>
-                        </form>
-                    </div>
-                `,
+                                <div class="comment-section">
+                                    <h3>Comments</h3>
+                                    <div class="comment">
+                                        <p><strong>User 1:</strong> This is a great post!</p>
+                                    </div>
+                                    <div class="comment">
+                                        <p><strong>User 2:</strong> Thanks for sharing this information.</p>
+                                    </div>
+                                    <form class="comment-form">
+                                        <label for="comment">Add a comment</label>
+                                        <textarea id="comment" name="comment"></textarea>
+                                        <button type="submit">Submit</button>
+                                    </form>
+                                </div>
+                            `,
                 category: 'Basic',
             });
 
@@ -231,14 +281,14 @@
             editor.BlockManager.add('future-match', {
                 label: 'Futur Match',
                 content: `
-                    <div class="future-match">
-                        <h3>Prochain Match</h3>
-                        <p><strong>Date:</strong> 15 juillet 2024</p>
-                        <p><strong>Adversaire:</strong> Équipe adverse</p>
-                        <p><strong>Lieu:</strong> Stade XYZ</p>
-                        <a href="#" class="btn btn-primary">Détails</a>
-                    </div>
-                `,
+                                <div class="future-match">
+                                    <h3>Prochain Match</h3>
+                                    <p><strong>Date:</strong> 15 juillet 2024</p>
+                                    <p><strong>Adversaire:</strong> Équipe adverse</p>
+                                    <p><strong>Lieu:</strong> Stade XYZ</p>
+                                    <a href="#" class="btn btn-primary">Détails</a>
+                                </div>
+                            `,
                 category: 'Events',
                 attributes: { class: 'gjs-fonts gjs-f-button' }
             });
@@ -247,23 +297,26 @@
             editor.BlockManager.add('training-session', {
                 label: 'Entraînement',
                 content: `
-                    <div class="training-session">
-                        <h3>Entraînement</h3>
-                        <p><strong>Date:</strong> 20 juillet 2024</p>
-                        <p><strong>Heure:</strong> 10:00 - 12:00</p>
-                        <p><strong>Lieu:</strong> Centre d'entraînement</p>
-                    </div>
-                `,
+                                <div class="training-session">
+                                    <h3>Entraînement</h3>
+                                    <p><strong>Date:</strong> 20 juillet 2024</p>
+                                    <p><strong>Heure:</strong> 10:00 - 12:00</p>
+                                    <p><strong>Lieu:</strong> Centre d'entraînement</p>
+                                </div>
+                            `,
                 category: 'Events',
                 attributes: { class: 'gjs-fonts gjs-f-button' }
             });
 
             // Enregistrer le contenu avant de soumettre le formulaire
-            document.getElementById('editForm').onsubmit = function() {
+            document.getElementById('editForm').onsubmit = function () {
                 document.getElementById('content').value = editor.getHtml() + "<style>" + editor.getCss() + "</style>";
                 return true;
             };
         </script>
+
+
     <?php endif; ?>
 </body>
+
 </html>

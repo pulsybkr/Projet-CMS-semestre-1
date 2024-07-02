@@ -2,6 +2,7 @@
 namespace App\Controller;
 use App\Compenent\Validate;
 use App\Core\Form;
+use App\Core\SqlPdo;
 use App\Core\View;
 use App\Models\User;
 
@@ -10,6 +11,16 @@ class Security{
     {
   
         $form = new Form("Login");
+        $user = new User();
+        $sqlPdo = new SqlPdo();
+        $pdo = $sqlPdo->getPdo();
+
+        if ($user->adminExists($pdo)) {
+            echo "<p class='notification notification--danger'>NB: Vous ne pouvez pas créer un compte, demandez à un admin de vous inviter !</p>";
+            // Redirection or rendering a different view might be more appropriate here
+            // header("Location: /login");
+            // exit;
+        }
         if( $form->isSubmitted() && $form->isValid() )
         {
             $user = new User();
@@ -23,22 +34,31 @@ class Security{
     }
     public function register(): void
     {
-
         $form = new Form("Register");
-
-        if( $form->isSubmitted() && $form->isValid() )
-        {
-            $user = new User();
-            $user->setFirstname($_POST["firstname"]);
-            $user->setLastname($_POST["lastname"]);
-            $user->setEmail($_POST["email"]);
-            $user->setPassword($_POST["password"]);
-            $user->save();
-        }
-
         $view = new View("Security/register");
-        $view->assign("form", $form->build());
-        $view->render();
+
+        $user = new User();
+        $sqlPdo = new SqlPdo();
+        $pdo = $sqlPdo->getPdo();
+
+        if ($user->adminExists($pdo)) {
+            echo "<p class='notification notification--danger'>Vous ne pouvez pas créer un compte, demandez à un admin de vous inviter !</p>";
+            // Redirection or rendering a different view might be more appropriate here
+            header("Location: /login");
+            // exit;
+        } else {
+            $view->assign("form", $form->build());
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $user->setFirstname($_POST["firstname"]);
+                $user->setLastname($_POST["lastname"]);
+                $user->setEmail($_POST["email"]);
+                $user->setPassword($_POST["password"]);
+                $user->save();
+            }
+
+            $view->render();
+        }
     }
     public function logout(): void
     {
@@ -59,7 +79,7 @@ class Security{
         if($token){
             $valide = new Validate();
             if(!$valide->isTokenValide($token) ){
-                die("Le token c'est pas fonctionnelle mon bebou d'amour");
+                die("Le token c'est pas fonctionnelle ");
             }
 
             // echo $valide->isTokenValide($token);
@@ -105,19 +125,19 @@ class Security{
     
         // Vérifier si le token et l'email sont vides
         if(empty($token) || empty($email)){
-            die("Erreur lors de la récupération des données. Veuillez réessayer avec le lien que vous avez reçu par e-mail, je suis désolé mon bebou d'amour.");
+            die("Erreur lors de la récupération des données. Veuillez réessayer avec le lien que vous avez reçu par e-mail, je suis désolé .");
         }
         
         $valide = new Validate();
 
         if($valide->isAccountActive($email)){
-            die("Le compte est deja valider. connecte toi mon bebou d'amour.");
+            die("Le compte est deja valider. connecte toi .");
         }
 
         if($valide->validateUser($email, $token)){
-            echo "Votre compte a été validé avec succès mon bebou d'amour.<br>";
+            echo "Votre compte a été validé avec succès .<br>";
         } else {
-            echo "Aucun utilisateur trouvé avec ce token et cet email mon bebou d'amour.<br>";
+            echo "Aucun utilisateur trouvé avec ce token et cet email .<br>";
         }
     }
 }

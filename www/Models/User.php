@@ -6,7 +6,12 @@ use PDO;
 class User extends SQL
 {
     const ROLE_USER = 'user';
+    const ROLE_EDIT= 'edit';
+
+    const ROLE_CONTRIB= 'contrib';
+
     const ROLE_ADMIN = 'admin';
+
 
     private ?int $id = null;
     protected string $firstname;
@@ -212,6 +217,18 @@ class User extends SQL
 
         return $role === self::ROLE_ADMIN;
     }
+
+    public static function adminExists($pdo): bool
+    {
+        $sql = "SELECT COUNT(*) FROM esgi_user WHERE role = :role";
+        $queryPrepared = $pdo->prepare($sql);
+        $queryPrepared->bindValue(':role', self::ROLE_ADMIN, PDO::PARAM_STR);
+        $queryPrepared->execute();
+        $adminCount = $queryPrepared->fetchColumn();
+
+        return $adminCount > 0;
+    }
+
 
     private function userExists(int $userId): bool
     {

@@ -8,16 +8,16 @@ class Main
     public function home()
     {
         //Appeler un template Front et la vue Main/Home
-        $view = new View("Main/home", "Back");
+        $view = new View("Main/home", "Front");
         $sql = new \App\Core\SQL();
         $validate = new Validate();
         $sqlPdo = new SqlPdo();
         $pdo = $sqlPdo->getPdo();
         
-        if(!$view->isLog()){
-            header("Location: /login");
-            exit();
-        }
+        // if(!$view->isLog()){
+        //     header("Location: /login");
+        //     exit();
+        // }
 
         $email = $sql->getUserIdFromCookie();
         if($email){
@@ -30,7 +30,7 @@ class Main
             }
         }
 
-        echo "on est connecté";
+        // echo "on est connecté";
         //$view->setView("Main/Home");
         //$view->setTemplate("Front");
         $view->render();

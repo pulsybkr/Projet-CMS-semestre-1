@@ -13,5 +13,9 @@
          <main>
             <?php include "../Views/".$this->view.".php";?>
          </main>
+         <script src="http://<?php
+    $domain = $_SERVER['HTTP_HOST'];
+    echo $domain;
+    ?>/Asset/script.js"></script>
     </body>
 </html>

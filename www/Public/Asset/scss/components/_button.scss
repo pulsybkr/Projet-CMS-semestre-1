@@ -1,3 +1,5 @@
+$base-font-size: 16px; // Define your base font size here
+
 .button {
     // reset
     display: inline-block;
@@ -7,7 +9,7 @@
     cursor: pointer;
 
     // Variables du composant
-    --padding: #{rem(10)} #{rem(16)};
+    --padding: 10px 16px;
     --fontSize: 1rem;
     --bg-color: var(--bg-color, #e0e0e0);
     --text-color: var(--text-color, #000);
@@ -43,7 +45,7 @@
     }
 
     &--sm {
-        --fontSize: #{rem(14)};
+        --fontSize: 14px;
         --padding: var(--padding-small);
     }
 }

@@ -1,1 +1,3 @@
-<h1>Page d'information</h1>
+<?php if (!empty($content)): ?>
+    <?php echo $content; ?>
+<?php endif; ?>

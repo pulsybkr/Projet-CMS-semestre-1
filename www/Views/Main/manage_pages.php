@@ -13,6 +13,7 @@
                     <td><?php echo htmlspecialchars($page['title']); ?></td>
                     <td>
                         <a class="button button--secondary button--sm" href="manage-pages/build-page?id=<?php echo $page['id']; ?>">Modifier</a>
+                        <a class="button button--secondary button--sm" href="/front/<?php echo $page['type']; ?>">Visiter</a>
                         <a class="button button--danger button--sm" href="manage-pages/delete-page?id=<?php echo $page['id']; ?>">Supprimer</a>
                     </td>
                 </tr>

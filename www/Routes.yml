@@ -64,6 +64,24 @@
   Controller: "Dashboard"
   Action: "profil"
 
+/dashboard/article:
+  IsAdmin: false
+  Islog: false
+  Controller: "Articles"
+  Action: "article"
+
+/dashboard/article/create-article:
+  IsAdmin: false
+  Islog: false
+  Controller: "Articles"
+  Action: "create_article"
+
+/dashboard/article/update-article:
+  IsAdmin: false
+  Islog: false
+  Controller: "Articles"
+  Action: "update_article"
+
 /dashboard/invite-user:
   IsAdmin: false
   Islog: false

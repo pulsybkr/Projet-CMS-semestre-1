@@ -13,7 +13,6 @@ services:
       - JWT_SECRET_KEY=o58BDHpCdnI4Y6iYtmk9RLJ5IVbB8svfsPw09kjiupAMrab0vO4JdXmZunG3kSat
       - DOMAIN=localhost
 
-
   composer:
     image: composer:latest
     volumes:
@@ -41,18 +40,6 @@ services:
     depends_on:
       - postgres
 
-  phpmyadmin:
-    image: phpmyadmin
-    restart: always
-    environment:
-      PMA_HOST: mariadb
-      PMA_USER: esgi
-      PMA_PASSWORD: esgipwd
-    ports:
-      - "9090:80"
-    depends_on:
-      - postgres
-
   nginx:
     image: nginx:latest
     ports:
@@ -62,7 +49,19 @@ services:
       - ./www:/var/www
     depends_on:
       - web
-      - phpmyadmin
+      - pgadmin
+  
+  # sass:
+  #   image: node:latest
+  #   volumes:
+  #     - ./www:/var/www/
+  #   working_dir: /var/www/
+  #   command: sh -c "npm install -g sass && sass --watch /var/www/Public/Asset/scss:/var/www/Public/Asset/scss"
 
+  sass:
+    image: larryprice/sass
+    volumes:
+      - ./:/src
+    
 volumes:
   mariadb_data:

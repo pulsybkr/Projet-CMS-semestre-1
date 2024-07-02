@@ -1,1 +1,3 @@
-<h1>Page de contact</h1>
+<?php if (!empty($content)): ?>
+    <?php echo $content; ?>
+<?php endif; ?>

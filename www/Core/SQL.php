@@ -82,23 +82,32 @@ class SQL
     }
     public function save()
     {
-        $columnsAll = get_object_vars($this);
-        $columnsToDelete = get_class_vars(get_class());
-        $columns = array_diff_key($columnsAll, $columnsToDelete);
+    // Vérifier si l'email existe déjà
+    $existingEmail = $this->findByEmail($this->email);
+    
+    if ($existingEmail) {
+        // Gérer le cas où l'email existe déjà
+        echo "<p class='notification  notification--danger'>Email already exists.</p>";
+        return;
+    }
 
-        // token de validation
-        $tokenValidation = bin2hex(random_bytes(32));
-        $columns['token_validation'] = $tokenValidation;
+    $columnsAll = get_object_vars($this);
+    $columnsToDelete = get_class_vars(get_class());
+    $columns = array_diff_key($columnsAll, $columnsToDelete);
 
-        if (empty($this->getId())) {
-            $sql = "INSERT INTO " . $this->table . " (" . implode(', ', array_keys($columns)) . ")  
-            VALUES (:" . implode(',:', array_keys($columns)) . ")";
-        } else {
-            foreach ($columns as $column => $value) {
-                $sqlUpdate[] = $column . "=:" . $column;
-            }
+    // token de validation
+    $tokenValidation = bin2hex(random_bytes(32));
+    $columns['token_validation'] = $tokenValidation;
 
-            $sql = "UPDATE " . $this->table . " SET " . implode(',', $sqlUpdate) . " WHERE id=" . $this->getId();
+    if (empty($this->getId())) {
+        $sql = "INSERT INTO " . $this->table . " (" . implode(', ', array_keys($columns)) . ")  
+        VALUES (:" . implode(',:', array_keys($columns)) . ")";
+    } else {
+        foreach ($columns as $column => $value) {
+            $sqlUpdate[] = $column . "=:" . $column;
+        }
+
+        $sql = "UPDATE " . $this->table . " SET " . implode(',', $sqlUpdate) . " WHERE id=" . $this->getId();
         }
 
         $queryPrepared = $this->pdo->prepare($sql);
@@ -110,6 +119,14 @@ class SQL
         $domain = getenv('DOMAIN');
         $validationLink = "http://$domain/validate?token=$tokenValidation&email=$toEmail";
         $this->sendValidationEmail($toEmail, $toName, $validationLink);
+    }
+
+    private function findByEmail($email)
+    {
+        $sql = "SELECT * FROM " . $this->table . " WHERE email = :email LIMIT 1";
+        $query = $this->pdo->prepare($sql);
+        $query->execute(['email' => $email]);
+        return $query->fetch(PDO::FETCH_ASSOC);
     }
 
     public function connect($password)
@@ -308,7 +325,7 @@ class SQL
             $mail->AltBody = "Bonjour $toName,\n\nMerci de vous être inscrit. Veuillez cliquer sur le lien suivant pour valider votre compte :\n$validationLink\n\nMerci,\nL'équipe";
     
             $mail->send();
-            echo 'Le message a été envoyé avec succès';
+            echo "<p class='notification  notification--success'/>Le message a été envoyé avec succès</p>";
         } catch (Exception $e) {
             echo "Le message n'a pas pu être envoyé. Erreur Mailer : {$mail->ErrorInfo}";
         }
@@ -338,7 +355,7 @@ class SQL
             $mail->AltBody = "Bonjour ,\n\nVoici le lien pour modifié votre mot de passe mon bebou d'amour :\n$validationLink\n\nMerci,\nL'équipe";
     
             $mail->send();
-            echo 'Le mail pour changer votre email à été envoyer.';
+            echo "<p class='notification  notification--success'/>Le mail pour changer votre mot de passe à été envoyer.</p>";
         } catch (Exception $e) {
             echo "Le message n'a pas pu être envoyé. Erreur Mailer : {$mail->ErrorInfo}";
         }

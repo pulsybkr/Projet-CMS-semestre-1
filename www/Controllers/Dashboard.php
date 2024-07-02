@@ -4,6 +4,7 @@ use App\Compenent\Validate;
 use App\Core\Form;
 use App\Core\SqlPdo;
 use App\Core\View;
+use App\Models\Article;
 use App\Models\Club;
 use App\Models\Page;
 use App\Models\User;
@@ -78,7 +79,6 @@ class Dashboard
             //     echo "tu n'as pas les droits necessaires mon ami";
             // }
             $view->logout();
-            echo "se deconnecter";
         }
 
         $view->render();
@@ -241,8 +241,10 @@ class Dashboard
         $pages = $pagesModel->getAllPages($this->pdo);
         // Passer les utilisateurs à la vue
         $view->assign("pages", $pages);
-
         $view->assign("page", $page);
+        $articleModel = new Article();
+        $articles = $articleModel->getAllArticles($this->pdo);
+        $view->assign("articles", $articles);
         $view->render();
         //Déconnexion
         //Redirection
@@ -317,7 +319,7 @@ class Dashboard
         //$view->setTemplate("Front");
         $view->render();
     }
-    
+   
     public function logout()
     {
         //Déconnexion

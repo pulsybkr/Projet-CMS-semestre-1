@@ -23,6 +23,7 @@
         <ul>
             <li><a href="/dashboard/">Tableau de bord</a></li>
             <li><a href="/dashboard/user">Utilisateur</a></li>
+            <li><a href="/dashboard/article">Articles</a></li>
             <li><a href="/dashboard/manages-pages">Manage page</a></li>
             <li><a href="/dashboard/">Infos Club</a></li>
             <li><a href="/dashboard/profil">Profil</a></li>
