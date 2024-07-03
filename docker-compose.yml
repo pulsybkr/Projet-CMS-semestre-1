@@ -11,9 +11,7 @@ services:
       - composer
     environment:
       - JWT_SECRET_KEY=o58BDHpCdnI4Y6iYtmk9RLJ5IVbB8svfsPw09kjiupAMrab0vO4JdXmZunG3kSat
-      - DOMAIN=34.136.248
-    ports:
-      - "8080:80"
+      - DOMAIN=localhost
 
   composer:
     image: composer:latest

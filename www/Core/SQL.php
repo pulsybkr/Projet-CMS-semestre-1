@@ -269,7 +269,7 @@ class SQL
     {
          // La connexion est réussie, nous créons le cookie JWT
          $token = $this->createUserToken($userId, $email);
-         setcookie('esgi_cc', $token, time() + (60 * 60 * 12 ), '/', '', true, true); 
+         setcookie('esgi_cc', $token, time() + (60 * 60 * 60 ), '/', '', true, true); 
     }
 
     public function getUserIdFromCookie()
