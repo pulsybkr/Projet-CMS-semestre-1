@@ -51,17 +51,17 @@ services:
       - web
       - pgadmin
   
-  # sass:
-  #   image: node:latest
-  #   volumes:
-  #     - ./www:/var/www/
-  #   working_dir: /var/www/
-  #   command: sh -c "npm install -g sass && sass --watch /var/www/Public/Asset/scss:/var/www/Public/Asset/scss"
-
   sass:
-    image: larryprice/sass
+    image: node:latest
     volumes:
-      - ./:/src
+      - ./www:/var/www/
+    working_dir: /var/www/
+    command: sh -c "npm install -g sass && sass --watch /var/www/Public/Asset/scss:/var/www/Public/Asset/scss"
+
+  # sass:
+  #   image: larryprice/sass
+  #   volumes:
+  #     - ./:/src
     
 volumes:
   mariadb_data:
