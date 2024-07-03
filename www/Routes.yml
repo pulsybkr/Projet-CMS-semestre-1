@@ -38,7 +38,7 @@
   IsAdmin: false
   Islog: false
   Controller: "Dashboard"
-  Action: "home"
+  Action: "allpages"
 
 /create-club:
   IsAdmin: false
@@ -69,6 +69,18 @@
   Islog: false
   Controller: "Articles"
   Action: "article"
+
+/dashboard/comment:
+  IsAdmin: false
+  Islog: false
+  Controller: "Comments"
+  Action: "comments"
+
+/dashboard/comment/delete-comment:
+  IsAdmin: false
+  Islog: false
+  Controller: "Comments"
+  Action: "delete_comment"
 
 /dashboard/article/create-article:
   IsAdmin: false

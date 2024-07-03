@@ -141,18 +141,14 @@ class Articles
         $articleModel = new Article();
         $articles = $articleModel->getAllArticles($this->pdo);
 
-
+        if ($_SERVER['REQUEST_METHOD'] === 'GET'){
+            echo "demande de quelque chose";
+        }
         // Passer les utilisateurs à la vue
         $view->assign("articles", $articles);
         //$view->setView("Main/Home");
         //$view->setTemplate("Front");
         $view->render();
-    }
-    
-    public function logout()
-    {
-        //Déconnexion
-        //Redirection
     }
 
 

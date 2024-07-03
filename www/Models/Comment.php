@@ -109,6 +109,15 @@ class Comment extends SQL
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getAllComments(PDO $pdo): array
+    {
+        $sql = "SELECT * FROM esgi_comment";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
     /**
      * Ajouter un nouveau commentaire
      *
