@@ -123,7 +123,7 @@ class Dashboard
                 $user->setLastname($_POST["lastname"]);
                 $user->setEmail($_POST["email"]);
                 $user->setPassword($_POST["password"]);
-                $user->setRole("user");
+                $user->setRole("edit");
                 $user->save();
             } else {
                 echo "<p class='notification  notification--danger'>Vous n'avez pas les droit necessaires pour inviter un utilisateur</p>";
